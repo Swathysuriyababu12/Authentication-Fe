@@ -1,15 +1,21 @@
 import React, { useState } from 'react';
 import { Container, Form, Button } from 'react-bootstrap';
 import "../styles/SignUp.css";
-
+import { toast } from "react-toastify";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios"
+import API_URL from '../config/global';
 const SignUp = () => {
       const [formData, setFormData] = useState({
-        firstName: '',
-        lastName: '',
+        name: '',
         email: '',
         password: '',
       });
     
+
+      const navigate = useNavigate();
+
+
       const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({
@@ -18,10 +24,31 @@ const SignUp = () => {
         });
       };
     
-      const handleSubmit = (e) => {
+      const handleSubmit = async(e) => {
         e.preventDefault();
         // Add your registration logic here, e.g., sending the data to a server.
-        console.log(formData);
+        try {
+          const response = await axios.post(`${API_URL}signin/verify`, formData);
+          console.log(response)
+          if (response.data === true) {
+            alert("Registration link sent to your mail id");
+            navigate("/login");
+          } else if(response.data === false) {
+              alert("User already exists");
+          }
+         
+        } catch (error) {
+          // toast.success(error);
+          console.error('Error during registration:', error);
+          
+        }
+
+
+
+        
+    
+       
+       
       };
     
       return (
@@ -32,14 +59,14 @@ const SignUp = () => {
               <Form.Label>First Name</Form.Label>
               <Form.Control
                 type="text"
-                name="firstName"
-                value={formData.firstName}
+                name="name"
+                value={formData.name}
                 onChange={handleChange}
                 required
               />
             </Form.Group>
     
-            <Form.Group>
+            {/* <Form.Group>
               <Form.Label>Last Name</Form.Label>
               <Form.Control
                 type="text"
@@ -48,7 +75,7 @@ const SignUp = () => {
                 onChange={handleChange}
                 required
               />
-            </Form.Group>
+            </Form.Group> */}
     
             <Form.Group>
               <Form.Label>Email</Form.Label>
