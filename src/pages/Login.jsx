@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
-import { Container, Form, Button } from 'react-bootstrap';
-import "../styles/Login.css"
-import API_URL from '../config/global';
-import axios from "axios"
+import React, { useState } from "react";
+import { Container, Form, Button } from "react-bootstrap";
+import "../styles/Login.css";
+import API_URL from "../config/global";
+import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 function LoginPage() {
   const [formData, setFormData] = useState({
-    email: '',
-    password: '',
+    email: "",
+    password: "",
   });
 
   const navigate = useNavigate();
@@ -20,24 +20,23 @@ function LoginPage() {
     });
   };
 
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     // Add your login logic here, e.g., sending the data to a server.
     try {
       const response = await axios.post(`${API_URL}login`, formData);
-      console.log(response)
+      console.log(response);
       if (response.data === "Invalid User name or Password") {
-        alert("Invalid User name or Password")
+        alert("Invalid User name or Password");
       } else if (response.data === "Server Busy") {
-        alert("verify your mail id")
+        alert("verify your mail id");
       } else if (response?.status) {
-        navigate("/home"); 
+        localStorage.setItem("userInfo", JSON.stringify(response.data));
+        navigate("/home");
       }
-     
     } catch (error) {
       // toast.success(error);
       console.error(error);
-      
     }
     console.log(formData);
   };
