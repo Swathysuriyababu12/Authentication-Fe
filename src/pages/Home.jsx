@@ -38,23 +38,6 @@ const Home = () => {
       console.error(error);
     }
   };
-  const getDetails = async () => {
-    try {
-      const response = await axios.get(`${API_URL}home/getDetails`);
-      console.log(response);
-
-      if (response.data === "session expired") {
-        alert("Login again");
-      } else if (response.data === "Server Busy") {
-        alert("Unauthorized access");
-      } else if (response?.status) {
-        await setRes(response.data);
-        console.log(res);
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
   return (
     <div className="container">
@@ -64,13 +47,6 @@ const Home = () => {
       <a href="#" className="button">
         Get Started
       </a>
-      <button
-        onClick={() => {
-          getDetails();
-        }}
-      >
-        Click here to get the details of the user
-      </button>
     </div>
   );
 };
